@@ -1,0 +1,101 @@
+[build-system]
+requires = ["setuptools>=69", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "agent-execution-debugger"
+version = "1.0.0"
+description = "Evidence-backed analyzer and root-cause debugger for AI agent execution traces"
+readme = "README.md"
+requires-python = ">=3.10"
+license = "MIT"
+license-files = ["LICENSE"]
+authors = [{ name = "Sanjay Mouraly", email = "sanjaymouraly@users.noreply.github.com" }]
+keywords = ["ai-agents", "observability", "tracing", "debugging", "root-cause-analysis", "opentelemetry"]
+classifiers = [
+  "Development Status :: 4 - Beta",
+  "Environment :: Web Environment",
+  "Framework :: FastAPI",
+  "Intended Audience :: Developers",
+  "Programming Language :: Python :: 3.10",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
+  "Topic :: Software Development :: Debuggers",
+]
+dependencies = [
+  "fastapi>=0.115,<1.0",
+  "uvicorn[standard]>=0.30,<1.0",
+  "pydantic>=2.8,<3.0",
+  "pydantic-settings>=2.4,<3.0",
+  "python-multipart>=0.0.9,<1.0",
+  "httpx>=0.27,<1.0",
+  "sqlalchemy>=2.0.36,<3.0",
+  "alembic>=1.14,<2.0",
+  "cryptography>=44.0,<46.0",
+  "redis>=5.2,<7.0",
+  "psycopg[binary]>=3.2,<4.0",
+]
+
+[project.optional-dependencies]
+dev = [
+  "pytest>=8.0,<10.0",
+  "pytest-asyncio>=0.24,<2.0",
+  "ruff>=0.8,<1.0",
+  "mypy>=1.11,<2.0",
+  "bandit>=1.7,<2.0",
+  "pip-audit>=2.7,<3.0",
+  "playwright>=1.48,<2.0",
+  "build>=1.2,<2.0",
+]
+otel = [
+  "opentelemetry-api>=1.27",
+  "opentelemetry-sdk>=1.27",
+  "opentelemetry-exporter-otlp-proto-http>=1.27",
+  "opentelemetry-instrumentation-fastapi>=0.48b0",
+]
+
+[project.urls]
+Homepage = "https://github.com/sanjaymouraly/ai-agent-trace-analyzer"
+Repository = "https://github.com/sanjaymouraly/ai-agent-trace-analyzer"
+Issues = "https://github.com/sanjaymouraly/ai-agent-trace-analyzer/issues"
+
+[project.scripts]
+tracelens = "agent_debugger.cli:main"
+
+[tool.setuptools]
+include-package-data = true
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["app*", "agent_debugger*", "examples*", "evals*"]
+
+[tool.pytest.ini_options]
+pythonpath = ["."]
+testpaths = ["tests"]
+addopts = "-q --strict-markers"
+filterwarnings = [
+  "ignore::DeprecationWarning:starlette.*",
+]
+
+[tool.ruff]
+line-length = 130
+target-version = "py310"
+exclude = [".venv", "data", "examples/traces", "frontend", "alembic/versions"]
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "B", "UP"]
+ignore = ["E501", "B008"]
+
+[tool.ruff.lint.per-file-ignores]
+"tests/*" = ["B011"]
+
+[tool.mypy]
+python_version = "3.10"
+ignore_missing_imports = true
+warn_unused_ignores = true
+no_implicit_optional = true
+check_untyped_defs = false
+exclude = ["alembic/versions"]
+
+[tool.bandit]
+exclude_dirs = ["tests", "frontend", "alembic/versions"]

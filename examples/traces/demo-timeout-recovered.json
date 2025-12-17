@@ -1,0 +1,127 @@
+{
+  "schema_version": "1.0",
+  "trace_id": "trace-demo-timeout-recovered",
+  "run_id": "demo-timeout-recovered",
+  "session_id": "session-inventory-status",
+  "task_id": "inventory-status",
+  "task": "Check inventory status with retry",
+  "agent_id": "demo-orchestrator",
+  "started_at": "2026-10-17T09:00:00+00:00",
+  "ended_at": "2026-10-17T09:00:07.688000+00:00",
+  "status": "success",
+  "final_answer": "Fourteen units are available.",
+  "evaluation_results": {
+    "passed": true
+  },
+  "environment": {
+    "dataset": "synthetic-demo",
+    "environment": "local-demo"
+  },
+  "spans": [
+    {
+      "span_id": "retry-p1",
+      "parent_span_id": null,
+      "action_id": null,
+      "name": "Plan stock check",
+      "action_type": "planning",
+      "start_time": "2026-10-17T09:00:00+00:00",
+      "end_time": "2026-10-17T09:00:07.516000+00:00",
+      "status": "ok",
+      "inputs": null,
+      "outputs": {
+        "tool": "inventory.lookup"
+      },
+      "tool_name": null,
+      "tool_call_id": null,
+      "model": "gpt-demo",
+      "provider": "offline-fixture",
+      "token_usage": {
+        "total_tokens": 65
+      },
+      "retry_attempt": null,
+      "exception": null,
+      "explicit_dependencies": [],
+      "attributes": {}
+    },
+    {
+      "span_id": "retry-t1",
+      "parent_span_id": "retry-p1",
+      "action_id": "inventory-lookup",
+      "name": "Inventory lookup attempt 1",
+      "action_type": "tool",
+      "start_time": "2026-10-17T09:00:00.065000+00:00",
+      "end_time": "2026-10-17T09:00:07.065000+00:00",
+      "status": "timeout",
+      "inputs": {
+        "sku": "SKU-900"
+      },
+      "outputs": null,
+      "tool_name": "inventory.lookup",
+      "tool_call_id": "inv-call-1",
+      "model": null,
+      "provider": null,
+      "token_usage": {},
+      "retry_attempt": 1,
+      "exception": "Read timed out after 7 seconds",
+      "explicit_dependencies": [
+        "retry-p1"
+      ],
+      "attributes": {}
+    },
+    {
+      "span_id": "retry-t2",
+      "parent_span_id": "retry-p1",
+      "action_id": "inventory-lookup",
+      "name": "Inventory lookup attempt 2",
+      "action_type": "tool",
+      "start_time": "2026-10-17T09:00:07.350000+00:00",
+      "end_time": "2026-10-17T09:00:07.516000+00:00",
+      "status": "ok",
+      "inputs": {
+        "sku": "SKU-900"
+      },
+      "outputs": {
+        "sku": "SKU-900",
+        "available": 14
+      },
+      "tool_name": "inventory.lookup",
+      "tool_call_id": "inv-call-2",
+      "model": null,
+      "provider": null,
+      "token_usage": {},
+      "retry_attempt": 2,
+      "exception": null,
+      "explicit_dependencies": [
+        "retry-p1"
+      ],
+      "attributes": {}
+    },
+    {
+      "span_id": "retry-f1",
+      "parent_span_id": null,
+      "action_id": null,
+      "name": "Report stock",
+      "action_type": "model",
+      "start_time": "2026-10-17T09:00:07.600000+00:00",
+      "end_time": "2026-10-17T09:00:07.688000+00:00",
+      "status": "ok",
+      "inputs": {
+        "inventory_from_span": "retry-t2"
+      },
+      "outputs": "Fourteen units are available.",
+      "tool_name": null,
+      "tool_call_id": null,
+      "model": "gpt-demo",
+      "provider": "offline-fixture",
+      "token_usage": {
+        "total_tokens": 84
+      },
+      "retry_attempt": null,
+      "exception": null,
+      "explicit_dependencies": [
+        "retry-t2"
+      ],
+      "attributes": {}
+    }
+  ]
+}

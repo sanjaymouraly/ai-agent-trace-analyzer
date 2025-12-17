@@ -1,0 +1,138 @@
+{
+  "schema_version": "1.0",
+  "trace_id": "trace-demo-rag-stale-context",
+  "run_id": "demo-rag-stale-context",
+  "session_id": "session-refund-policy",
+  "task_id": "refund-policy",
+  "task": "Answer whether a 45-day-old purchase is refundable",
+  "agent_id": "demo-orchestrator",
+  "started_at": "2026-10-17T09:00:00+00:00",
+  "ended_at": "2026-10-17T09:00:00.470000+00:00",
+  "status": "failure",
+  "final_answer": "Yes, returns are allowed within 90 days.",
+  "evaluation_results": {
+    "passed": false,
+    "reason": "Used superseded policy revision."
+  },
+  "environment": {
+    "dataset": "synthetic-demo",
+    "environment": "local-demo"
+  },
+  "spans": [
+    {
+      "span_id": "rag-p1",
+      "parent_span_id": null,
+      "action_id": null,
+      "name": "Plan policy question",
+      "action_type": "planning",
+      "start_time": "2026-10-17T09:00:00+00:00",
+      "end_time": "2026-10-17T09:00:00.425000+00:00",
+      "status": "ok",
+      "inputs": null,
+      "outputs": {
+        "steps": [
+          "retrieve policy",
+          "answer"
+        ]
+      },
+      "tool_name": null,
+      "tool_call_id": null,
+      "model": "gpt-demo",
+      "provider": "offline-fixture",
+      "token_usage": {
+        "total_tokens": 75
+      },
+      "retry_attempt": null,
+      "exception": null,
+      "explicit_dependencies": [],
+      "attributes": {}
+    },
+    {
+      "span_id": "rag-r1",
+      "parent_span_id": "rag-p1",
+      "action_id": null,
+      "name": "Retrieve refund policy",
+      "action_type": "retrieval",
+      "start_time": "2026-10-17T09:00:00.055000+00:00",
+      "end_time": "2026-10-17T09:00:00.148000+00:00",
+      "status": "ok",
+      "inputs": {
+        "query": "refund window"
+      },
+      "outputs": {
+        "document_id": "policy-2023",
+        "text": "Returns accepted within 90 days."
+      },
+      "tool_name": "policy.vector_search",
+      "tool_call_id": null,
+      "model": null,
+      "provider": null,
+      "token_usage": {},
+      "retry_attempt": null,
+      "exception": null,
+      "explicit_dependencies": [
+        "rag-p1"
+      ],
+      "attributes": {
+        "expected_document_id": "policy-2026",
+        "document_id": "policy-2023",
+        "retrieval_relevant": false,
+        "retrieval_score": 0.31
+      }
+    },
+    {
+      "span_id": "rag-a1",
+      "parent_span_id": "rag-p1",
+      "action_id": null,
+      "name": "Compose policy answer",
+      "action_type": "model",
+      "start_time": "2026-10-17T09:00:00.195000+00:00",
+      "end_time": "2026-10-17T09:00:00.425000+00:00",
+      "status": "ok",
+      "inputs": {
+        "context_from_span": "rag-r1"
+      },
+      "outputs": "Yes, returns are allowed within 90 days.",
+      "tool_name": null,
+      "tool_call_id": null,
+      "model": "gpt-demo",
+      "provider": "offline-fixture",
+      "token_usage": {
+        "total_tokens": 242
+      },
+      "retry_attempt": null,
+      "exception": null,
+      "explicit_dependencies": [
+        "rag-r1"
+      ],
+      "attributes": {}
+    },
+    {
+      "span_id": "rag-e1",
+      "parent_span_id": null,
+      "action_id": null,
+      "name": "Policy answer evaluation",
+      "action_type": "evaluation",
+      "start_time": "2026-10-17T09:00:00.450000+00:00",
+      "end_time": "2026-10-17T09:00:00.470000+00:00",
+      "status": "error",
+      "inputs": {
+        "answer": "Yes, returns are allowed."
+      },
+      "outputs": null,
+      "tool_name": null,
+      "tool_call_id": null,
+      "model": null,
+      "provider": null,
+      "token_usage": {},
+      "retry_attempt": null,
+      "exception": "Evaluation failed: answer used superseded policy; current policy is 30 days",
+      "explicit_dependencies": [
+        "rag-a1"
+      ],
+      "attributes": {
+        "evaluation_passed": false
+      }
+    }
+  ]
+}

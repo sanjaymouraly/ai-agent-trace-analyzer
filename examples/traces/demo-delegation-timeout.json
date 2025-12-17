@@ -1,0 +1,193 @@
+{
+  "schema_version": "1.0",
+  "trace_id": "trace-demo-delegation-timeout",
+  "run_id": "demo-delegation-timeout",
+  "session_id": "session-market-research",
+  "task_id": "market-research",
+  "task": "Research two markets using specialist agents",
+  "agent_id": "demo-orchestrator",
+  "started_at": "2026-10-16T09:00:00+00:00",
+  "ended_at": "2026-10-16T09:00:08.600000+00:00",
+  "status": "failure",
+  "final_answer": null,
+  "evaluation_results": {
+    "passed": false
+  },
+  "environment": {
+    "dataset": "synthetic-demo",
+    "environment": "local-demo"
+  },
+  "spans": [
+    {
+      "span_id": "multi-o1",
+      "parent_span_id": null,
+      "action_id": null,
+      "name": "Research orchestrator",
+      "action_type": "agent",
+      "start_time": "2026-10-16T09:00:00+00:00",
+      "end_time": "2026-10-16T09:00:08.600000+00:00",
+      "status": "ok",
+      "inputs": null,
+      "outputs": {
+        "delegates": [
+          "market-a",
+          "market-b"
+        ]
+      },
+      "tool_name": null,
+      "tool_call_id": null,
+      "model": "gpt-demo",
+      "provider": "offline-fixture",
+      "token_usage": {
+        "total_tokens": 100
+      },
+      "retry_attempt": null,
+      "exception": null,
+      "explicit_dependencies": [],
+      "attributes": {
+        "agent_id": "orchestrator"
+      }
+    },
+    {
+      "span_id": "multi-d1",
+      "parent_span_id": "multi-o1",
+      "action_id": null,
+      "name": "Delegate market A",
+      "action_type": "delegation",
+      "start_time": "2026-10-16T09:00:00.050000+00:00",
+      "end_time": "2026-10-16T09:00:00.460000+00:00",
+      "status": "ok",
+      "inputs": null,
+      "outputs": {
+        "agent": "analyst-a"
+      },
+      "tool_name": null,
+      "tool_call_id": null,
+      "model": null,
+      "provider": null,
+      "token_usage": {},
+      "retry_attempt": null,
+      "exception": null,
+      "explicit_dependencies": [
+        "multi-o1"
+      ],
+      "attributes": {
+        "agent_id": "orchestrator",
+        "target_agent_id": "analyst-a"
+      }
+    },
+    {
+      "span_id": "multi-d2",
+      "parent_span_id": "multi-o1",
+      "action_id": null,
+      "name": "Delegate market B",
+      "action_type": "delegation",
+      "start_time": "2026-10-16T09:00:00.060000+00:00",
+      "end_time": "2026-10-16T09:00:08.170000+00:00",
+      "status": "ok",
+      "inputs": null,
+      "outputs": {
+        "agent": "analyst-b"
+      },
+      "tool_name": null,
+      "tool_call_id": null,
+      "model": null,
+      "provider": null,
+      "token_usage": {},
+      "retry_attempt": null,
+      "exception": null,
+      "explicit_dependencies": [
+        "multi-o1"
+      ],
+      "attributes": {
+        "agent_id": "orchestrator",
+        "target_agent_id": "analyst-b"
+      }
+    },
+    {
+      "span_id": "multi-a1",
+      "parent_span_id": "multi-d1",
+      "action_id": null,
+      "name": "Analyst A query market data",
+      "action_type": "tool",
+      "start_time": "2026-10-16T09:00:00.160000+00:00",
+      "end_time": "2026-10-16T09:00:00.460000+00:00",
+      "status": "ok",
+      "inputs": {
+        "market": "A"
+      },
+      "outputs": {
+        "growth": 0.12
+      },
+      "tool_name": "market-data.query",
+      "tool_call_id": null,
+      "model": null,
+      "provider": null,
+      "token_usage": {},
+      "retry_attempt": null,
+      "exception": null,
+      "explicit_dependencies": [
+        "multi-d1"
+      ],
+      "attributes": {
+        "agent_id": "analyst-a"
+      }
+    },
+    {
+      "span_id": "multi-b1",
+      "parent_span_id": "multi-d2",
+      "action_id": null,
+      "name": "Analyst B query market data",
+      "action_type": "tool",
+      "start_time": "2026-10-16T09:00:00.170000+00:00",
+      "end_time": "2026-10-16T09:00:08.170000+00:00",
+      "status": "timeout",
+      "inputs": {
+        "market": "B"
+      },
+      "outputs": null,
+      "tool_name": "market-data.query",
+      "tool_call_id": null,
+      "model": null,
+      "provider": null,
+      "token_usage": {},
+      "retry_attempt": null,
+      "exception": "Deadline exceeded while waiting for market B",
+      "explicit_dependencies": [
+        "multi-d2"
+      ],
+      "attributes": {
+        "agent_id": "analyst-b"
+      }
+    },
+    {
+      "span_id": "multi-f1",
+      "parent_span_id": null,
+      "action_id": null,
+      "name": "Merge specialist results",
+      "action_type": "model",
+      "start_time": "2026-10-16T09:00:08.300000+00:00",
+      "end_time": "2026-10-16T09:00:08.480000+00:00",
+      "status": "error",
+      "inputs": {
+        "market_a": "multi-a1",
+        "market_b": null
+      },
+      "outputs": null,
+      "tool_name": null,
+      "tool_call_id": null,
+      "model": "gpt-demo",
+      "provider": "offline-fixture",
+      "token_usage": {
+        "total_tokens": 55
+      },
+      "retry_attempt": null,
+      "exception": "Missing data: specialist B result absent",
+      "explicit_dependencies": [
+        "multi-a1",
+        "multi-b1"
+      ],
+      "attributes": {}
+    }
+  ]
+}

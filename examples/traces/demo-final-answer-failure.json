@@ -1,0 +1,133 @@
+{
+  "schema_version": "1.0",
+  "trace_id": "trace-demo-final-answer-failure",
+  "run_id": "demo-final-answer-failure",
+  "session_id": "session-support-refund",
+  "task_id": "support-refund",
+  "task": "Answer customer refund eligibility",
+  "agent_id": "demo-orchestrator",
+  "started_at": "2026-10-15T09:00:00+00:00",
+  "ended_at": "2026-10-15T09:00:00.422000+00:00",
+  "status": "failure",
+  "final_answer": "Your order is not eligible because it is over 30 days old.",
+  "evaluation_results": {
+    "passed": false,
+    "reason": "Escalation policy omitted."
+  },
+  "environment": {
+    "dataset": "synthetic-demo",
+    "environment": "local-demo"
+  },
+  "spans": [
+    {
+      "span_id": "fin-p1",
+      "parent_span_id": null,
+      "action_id": null,
+      "name": "Plan refund check",
+      "action_type": "planning",
+      "start_time": "2026-10-15T09:00:00+00:00",
+      "end_time": "2026-10-15T09:00:00.025000+00:00",
+      "status": "ok",
+      "inputs": null,
+      "outputs": {
+        "steps": [
+          "lookup",
+          "answer"
+        ]
+      },
+      "tool_name": null,
+      "tool_call_id": null,
+      "model": "gpt-demo",
+      "provider": "offline-fixture",
+      "token_usage": {
+        "total_tokens": 65
+      },
+      "retry_attempt": null,
+      "exception": null,
+      "explicit_dependencies": [],
+      "attributes": {}
+    },
+    {
+      "span_id": "fin-t1",
+      "parent_span_id": null,
+      "action_id": null,
+      "name": "Fetch purchase record",
+      "action_type": "tool",
+      "start_time": "2026-10-15T09:00:00.060000+00:00",
+      "end_time": "2026-10-15T09:00:00.180000+00:00",
+      "status": "ok",
+      "inputs": {
+        "order_id": "O-301"
+      },
+      "outputs": {
+        "purchase_date": "2026-09-20",
+        "amount": 36
+      },
+      "tool_name": "orders.get",
+      "tool_call_id": null,
+      "model": null,
+      "provider": null,
+      "token_usage": {},
+      "retry_attempt": null,
+      "exception": null,
+      "explicit_dependencies": [
+        "fin-p1"
+      ],
+      "attributes": {}
+    },
+    {
+      "span_id": "fin-a1",
+      "parent_span_id": null,
+      "action_id": null,
+      "name": "Draft refund answer",
+      "action_type": "model",
+      "start_time": "2026-10-15T09:00:00.220000+00:00",
+      "end_time": "2026-10-15T09:00:00.380000+00:00",
+      "status": "ok",
+      "inputs": {
+        "order": "fin-t1"
+      },
+      "outputs": "Your order is not eligible because it is over 30 days old.",
+      "tool_name": null,
+      "tool_call_id": null,
+      "model": "gpt-demo",
+      "provider": "offline-fixture",
+      "token_usage": {
+        "total_tokens": 155
+      },
+      "retry_attempt": null,
+      "exception": null,
+      "explicit_dependencies": [
+        "fin-t1"
+      ],
+      "attributes": {}
+    },
+    {
+      "span_id": "fin-e1",
+      "parent_span_id": null,
+      "action_id": null,
+      "name": "Evaluate refund answer",
+      "action_type": "evaluation",
+      "start_time": "2026-10-15T09:00:00.400000+00:00",
+      "end_time": "2026-10-15T09:00:00.422000+00:00",
+      "status": "error",
+      "inputs": {
+        "answer": "..."
+      },
+      "outputs": null,
+      "tool_name": null,
+      "tool_call_id": null,
+      "model": null,
+      "provider": null,
+      "token_usage": {},
+      "retry_attempt": null,
+      "exception": "Evaluation failed: policy requires escalation for damaged-item exceptions",
+      "explicit_dependencies": [
+        "fin-a1"
+      ],
+      "attributes": {
+        "evaluation_passed": false
+      }
+    }
+  ]
+}

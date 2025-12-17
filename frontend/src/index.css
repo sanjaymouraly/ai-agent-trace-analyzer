@@ -1,0 +1,177 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --surface: 249 250 252;
+    --surface-raised: 255 255 255;
+    --surface-sunken: 241 243 247;
+    --line: 224 228 236;
+    --line-strong: 199 206 218;
+    --ink: 24 32 45;
+    --ink-muted: 92 103 120;
+    --ink-faint: 138 148 164;
+    --accent: 16 138 106;
+    --accent-soft: 226 246 238;
+    --ok: 16 138 106;
+    --warn: 176 106 16;
+    --danger: 190 51 51;
+    --info: 43 106 190;
+  }
+
+  .dark {
+    --surface: 12 17 24;
+    --surface-raised: 19 26 36;
+    --surface-sunken: 9 13 19;
+    --line: 38 48 62;
+    --line-strong: 55 68 86;
+    --ink: 226 232 240;
+    --ink-muted: 148 163 184;
+    --ink-faint: 106 122 145;
+    --accent: 110 214 178;
+    --accent-soft: 24 60 50;
+    --ok: 110 214 178;
+    --warn: 235 179 92;
+    --danger: 244 128 128;
+    --info: 122 176 245;
+  }
+
+  html,
+  body,
+  #root {
+    height: 100%;
+  }
+
+  body {
+    @apply bg-surface text-ink antialiased;
+    font-feature-settings: 'cv02', 'cv03', 'cv04', 'tnum';
+  }
+
+  *:focus-visible {
+    @apply outline-none ring-2 ring-accent/70 ring-offset-2 ring-offset-surface;
+  }
+
+  ::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+  }
+  ::-webkit-scrollbar-track {
+    @apply bg-transparent;
+  }
+  ::-webkit-scrollbar-thumb {
+    @apply rounded-full border-2 border-solid border-transparent bg-line-strong bg-clip-content;
+  }
+}
+
+@layer components {
+  .panel {
+    @apply rounded-xl border border-line bg-surface-raised shadow-sm;
+  }
+
+  .panel-head {
+    @apply flex flex-wrap items-start justify-between gap-3 border-b border-line px-5 py-4;
+  }
+
+  .panel-title {
+    @apply text-sm font-semibold tracking-tight text-ink;
+  }
+
+  .panel-subtitle {
+    @apply mt-0.5 text-xs text-ink-muted;
+  }
+
+  .btn {
+    @apply inline-flex items-center justify-center gap-1.5 rounded-lg border border-line bg-surface-raised px-3 py-2 text-xs font-medium text-ink transition hover:border-line-strong hover:bg-surface-sunken disabled:cursor-not-allowed disabled:opacity-50;
+  }
+
+  .btn-primary {
+    @apply border-transparent bg-accent text-[rgb(9_16_22)] hover:bg-accent/90 hover:brightness-110;
+  }
+
+  .btn-ghost {
+    @apply border-transparent bg-transparent hover:bg-surface-sunken;
+  }
+
+  .btn-danger {
+    @apply border-transparent bg-danger/15 text-danger hover:bg-danger/25;
+  }
+
+  .btn-sm {
+    @apply px-2.5 py-1.5 text-2xs;
+  }
+
+  .field {
+    @apply w-full rounded-lg border border-line bg-surface px-3 py-2 text-sm text-ink placeholder:text-ink-faint focus:border-accent focus:outline-none;
+  }
+
+  .chip {
+    @apply inline-flex items-center gap-1 rounded-full border border-line bg-surface px-2 py-0.5 text-2xs font-medium text-ink-muted;
+  }
+
+  .mono {
+    @apply font-mono text-2xs;
+  }
+
+  .link {
+    @apply text-accent underline-offset-2 hover:underline;
+  }
+
+  .table {
+    @apply w-full border-collapse text-left text-xs;
+  }
+
+  .table th {
+    @apply border-b border-line px-4 py-2.5 text-2xs font-semibold uppercase tracking-wider text-ink-faint;
+  }
+
+  .table td {
+    @apply border-b border-line/60 px-4 py-3 align-top text-ink;
+  }
+
+  .json-block {
+    @apply max-h-96 overflow-auto rounded-lg border border-line bg-surface-sunken p-3 font-mono text-2xs leading-relaxed text-ink-muted;
+  }
+}
+
+@layer utilities {
+  .scroll-thin::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+
+  .grid-dots {
+    background-image: radial-gradient(rgb(var(--line-strong) / 0.55) 1px, transparent 1px);
+    background-size: 22px 22px;
+  }
+}
+
+/*
+ * React Flow chrome, themed to match the dashboard.
+ * These live outside a Tailwind layer because the library stylesheet is
+ * imported after this file, so plain rules with explicit values are used to
+ * guarantee the dashboard theme wins.
+ */
+.react-flow__controls {
+  flex-direction: row !important;
+  overflow: hidden;
+  border: 1px solid rgb(var(--line));
+  border-radius: 0.5rem;
+  box-shadow: 0 1px 2px rgb(0 0 0 / 0.25);
+}
+
+.react-flow__controls-button {
+  background: rgb(var(--surface-raised)) !important;
+  border-bottom: 1px solid rgb(var(--line));
+  color: rgb(var(--ink-muted)) !important;
+  fill: currentColor !important;
+}
+
+.react-flow__controls-button:hover {
+  background: rgb(var(--surface-sunken)) !important;
+  color: rgb(var(--ink)) !important;
+}
+
+.react-flow__attribution {
+  display: none !important;
+}

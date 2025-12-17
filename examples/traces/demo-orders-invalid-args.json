@@ -1,0 +1,139 @@
+{
+  "schema_version": "1.0",
+  "trace_id": "trace-demo-orders-invalid-args",
+  "run_id": "demo-orders-invalid-args",
+  "session_id": "session-weekly-orders",
+  "task_id": "weekly-orders",
+  "task": "Summarize orders from the last seven days",
+  "agent_id": "demo-orchestrator",
+  "started_at": "2026-10-17T09:00:00+00:00",
+  "ended_at": "2026-10-17T09:00:00.254000+00:00",
+  "status": "failure",
+  "final_answer": null,
+  "evaluation_results": {
+    "passed": false,
+    "reason": "No order summary produced."
+  },
+  "environment": {
+    "dataset": "synthetic-demo",
+    "environment": "local-demo"
+  },
+  "spans": [
+    {
+      "span_id": "bad-p1",
+      "parent_span_id": null,
+      "action_id": null,
+      "name": "Plan order summary",
+      "action_type": "planning",
+      "start_time": "2026-10-17T09:00:00+00:00",
+      "end_time": "2026-10-17T09:00:00.221000+00:00",
+      "status": "ok",
+      "inputs": null,
+      "outputs": {
+        "steps": [
+          "search",
+          "summarize"
+        ]
+      },
+      "tool_name": null,
+      "tool_call_id": null,
+      "model": "gpt-demo",
+      "provider": "offline-fixture",
+      "token_usage": {
+        "total_tokens": 98
+      },
+      "retry_attempt": null,
+      "exception": null,
+      "explicit_dependencies": [],
+      "attributes": {}
+    },
+    {
+      "span_id": "bad-q1",
+      "parent_span_id": "bad-p1",
+      "action_id": "search-orders",
+      "name": "Search orders",
+      "action_type": "tool",
+      "start_time": "2026-10-17T09:00:00.070000+00:00",
+      "end_time": "2026-10-17T09:00:00.114000+00:00",
+      "status": "error",
+      "inputs": {
+        "from_date": "last 7 days",
+        "limit": "lots"
+      },
+      "outputs": null,
+      "tool_name": "orders.search",
+      "tool_call_id": "call-order-bad",
+      "model": null,
+      "provider": null,
+      "token_usage": {},
+      "retry_attempt": null,
+      "exception": "Invalid arguments: expected ISO date for 'from' and 'to'; 'limit' must be an integer",
+      "explicit_dependencies": [
+        "bad-p1"
+      ],
+      "attributes": {
+        "argument_schema_valid": false
+      }
+    },
+    {
+      "span_id": "bad-s1",
+      "parent_span_id": "bad-p1",
+      "action_id": null,
+      "name": "Summarize order totals",
+      "action_type": "model",
+      "start_time": "2026-10-17T09:00:00.150000+00:00",
+      "end_time": "2026-10-17T09:00:00.221000+00:00",
+      "status": "error",
+      "inputs": {
+        "orders": null
+      },
+      "outputs": null,
+      "tool_name": null,
+      "tool_call_id": null,
+      "model": null,
+      "provider": null,
+      "token_usage": {},
+      "retry_attempt": null,
+      "exception": "Missing data: no orders output was supplied",
+      "explicit_dependencies": [
+        "bad-q1"
+      ],
+      "attributes": {
+        "missing_input": true,
+        "replay_adapter": "mock_required_fields",
+        "replay_spec": {
+          "required_fields": [
+            "orders"
+          ]
+        }
+      }
+    },
+    {
+      "span_id": "bad-f1",
+      "parent_span_id": null,
+      "action_id": null,
+      "name": "Evaluate final answer",
+      "action_type": "evaluation",
+      "start_time": "2026-10-17T09:00:00.240000+00:00",
+      "end_time": "2026-10-17T09:00:00.254000+00:00",
+      "status": "error",
+      "inputs": {
+        "summary": null
+      },
+      "outputs": null,
+      "tool_name": null,
+      "tool_call_id": null,
+      "model": null,
+      "provider": null,
+      "token_usage": {},
+      "retry_attempt": null,
+      "exception": "Evaluation failed: expected a non-empty order summary",
+      "explicit_dependencies": [
+        "bad-s1"
+      ],
+      "attributes": {
+        "missing_input": true
+      }
+    }
+  ]
+}

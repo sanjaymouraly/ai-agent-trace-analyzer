@@ -1,0 +1,51 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+venv/
+.env
+.env.*
+!.env.example
+.mypy_cache/
+.pytest_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+
+# Runtime / secrets / data
+/data/
+*.db
+*.db-shm
+*.db-wal
+*.sqlite
+*.sqlite3
+*.log
+*.pem
+*.key
+credentials*
+data/.secret_key
+
+# Node / build
+node_modules/
+dist/
+build/
+coverage/
+.vite/
+frontend/dist/
+*.tsbuildinfo
+
+# IDE / OS
+.idea/
+.vscode/
+.DS_Store
+Thumbs.db
+
+# Test artefacts
+/e2e-artifacts/
+/playwright-report/
+/test-results/
+
+# Local caches and generated files
+.next/
+CHANGELOG.md

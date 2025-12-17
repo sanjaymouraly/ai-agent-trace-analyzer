@@ -1,0 +1,218 @@
+{
+  "resourceSpans": [
+    {
+      "resource": {
+        "attributes": [
+          {
+            "key": "service.name",
+            "value": {
+              "stringValue": "demo-orchestrator"
+            }
+          },
+          {
+            "key": "tracelens.task",
+            "value": {
+              "stringValue": "Summarize orders from the last seven days"
+            }
+          },
+          {
+            "key": "tracelens.task_id",
+            "value": {
+              "stringValue": "weekly-orders"
+            }
+          },
+          {
+            "key": "tracelens.session_id",
+            "value": {
+              "stringValue": "session-weekly-orders"
+            }
+          }
+        ]
+      },
+      "scopeSpans": [
+        {
+          "scope": {
+            "name": "tracelens.sdk",
+            "version": "1.0.0"
+          },
+          "spans": [
+            {
+              "traceId": "trace-demo-orders-invalid-args",
+              "spanId": "bad-p1",
+              "name": "Plan order summary",
+              "kind": 3,
+              "startTimeUnixNano": "1792227600000000000",
+              "endTimeUnixNano": "1792227600220999936",
+              "attributes": [
+                {
+                  "key": "gen_ai.system",
+                  "value": {
+                    "stringValue": "offline-fixture"
+                  }
+                },
+                {
+                  "key": "gen_ai.request.model",
+                  "value": {
+                    "stringValue": "gpt-demo"
+                  }
+                },
+                {
+                  "key": "openinference.span.kind",
+                  "value": {
+                    "stringValue": "planning"
+                  }
+                }
+              ],
+              "status": {
+                "code": 1
+              }
+            },
+            {
+              "traceId": "trace-demo-orders-invalid-args",
+              "spanId": "bad-q1",
+              "name": "Search orders",
+              "kind": 1,
+              "startTimeUnixNano": "1792227600069999872",
+              "endTimeUnixNano": "1792227600114000128",
+              "attributes": [
+                {
+                  "key": "gen_ai.tool.name",
+                  "value": {
+                    "stringValue": "orders.search"
+                  }
+                },
+                {
+                  "key": "openinference.span.kind",
+                  "value": {
+                    "stringValue": "tool"
+                  }
+                },
+                {
+                  "key": "tracelens.action_id",
+                  "value": {
+                    "stringValue": "search-orders"
+                  }
+                },
+                {
+                  "key": "argument_schema_valid",
+                  "value": {
+                    "boolValue": false
+                  }
+                }
+              ],
+              "status": {
+                "code": 2
+              },
+              "parentSpanId": "bad-p1",
+              "events": [
+                {
+                  "name": "exception",
+                  "timeUnixNano": "1792227600114000128",
+                  "attributes": [
+                    {
+                      "key": "exception.message",
+                      "value": {
+                        "stringValue": "Invalid arguments: expected ISO date for 'from' and 'to'; 'limit' must be an integer"
+                      }
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "traceId": "trace-demo-orders-invalid-args",
+              "spanId": "bad-s1",
+              "name": "Summarize order totals",
+              "kind": 3,
+              "startTimeUnixNano": "1792227600150000128",
+              "endTimeUnixNano": "1792227600220999936",
+              "attributes": [
+                {
+                  "key": "openinference.span.kind",
+                  "value": {
+                    "stringValue": "model"
+                  }
+                },
+                {
+                  "key": "missing_input",
+                  "value": {
+                    "boolValue": true
+                  }
+                },
+                {
+                  "key": "replay_adapter",
+                  "value": {
+                    "stringValue": "mock_required_fields"
+                  }
+                },
+                {
+                  "key": "replay_spec",
+                  "value": {
+                    "stringValue": "{'required_fields': ['orders']}"
+                  }
+                }
+              ],
+              "status": {
+                "code": 2
+              },
+              "parentSpanId": "bad-p1",
+              "events": [
+                {
+                  "name": "exception",
+                  "timeUnixNano": "1792227600220999936",
+                  "attributes": [
+                    {
+                      "key": "exception.message",
+                      "value": {
+                        "stringValue": "Missing data: no orders output was supplied"
+                      }
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "traceId": "trace-demo-orders-invalid-args",
+              "spanId": "bad-f1",
+              "name": "Evaluate final answer",
+              "kind": 3,
+              "startTimeUnixNano": "1792227600240000000",
+              "endTimeUnixNano": "1792227600253999872",
+              "attributes": [
+                {
+                  "key": "openinference.span.kind",
+                  "value": {
+                    "stringValue": "evaluation"
+                  }
+                },
+                {
+                  "key": "missing_input",
+                  "value": {
+                    "boolValue": true
+                  }
+                }
+              ],
+              "status": {
+                "code": 2
+              },
+              "events": [
+                {
+                  "name": "exception",
+                  "timeUnixNano": "1792227600253999872",
+                  "attributes": [
+                    {
+                      "key": "exception.message",
+                      "value": {
+                        "stringValue": "Evaluation failed: expected a non-empty order summary"
+                      }
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

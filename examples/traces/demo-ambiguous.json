@@ -1,0 +1,101 @@
+{
+  "schema_version": "1.0",
+  "trace_id": "trace-demo-ambiguous",
+  "run_id": "demo-ambiguous",
+  "session_id": "session-knowledge-answer",
+  "task_id": "knowledge-answer",
+  "task": "Answer an internal knowledge question",
+  "agent_id": "demo-orchestrator",
+  "started_at": "2026-10-14T09:00:00+00:00",
+  "ended_at": "2026-10-14T09:00:00.305000+00:00",
+  "status": "failure",
+  "final_answer": "Please contact the relevant team.",
+  "evaluation_results": {},
+  "environment": {
+    "dataset": "synthetic-demo",
+    "environment": "local-demo"
+  },
+  "spans": [
+    {
+      "span_id": "amb-p1",
+      "parent_span_id": null,
+      "action_id": null,
+      "name": "Plan knowledge search",
+      "action_type": "planning",
+      "start_time": "2026-10-14T09:00:00+00:00",
+      "end_time": "2026-10-14T09:00:00.025000+00:00",
+      "status": "ok",
+      "inputs": null,
+      "outputs": {
+        "query": "benefits"
+      },
+      "tool_name": null,
+      "tool_call_id": null,
+      "model": "gpt-demo",
+      "provider": "offline-fixture",
+      "token_usage": {
+        "total_tokens": 56
+      },
+      "retry_attempt": null,
+      "exception": null,
+      "explicit_dependencies": [],
+      "attributes": {}
+    },
+    {
+      "span_id": "amb-r1",
+      "parent_span_id": null,
+      "action_id": null,
+      "name": "Search knowledge base",
+      "action_type": "retrieval",
+      "start_time": "2026-10-14T09:00:00.060000+00:00",
+      "end_time": "2026-10-14T09:00:00.136000+00:00",
+      "status": "ok",
+      "inputs": {
+        "query": "benefits"
+      },
+      "outputs": {
+        "snippets": [
+          "A handbook excerpt"
+        ]
+      },
+      "tool_name": "knowledge.search",
+      "tool_call_id": null,
+      "model": null,
+      "provider": null,
+      "token_usage": {},
+      "retry_attempt": null,
+      "exception": null,
+      "explicit_dependencies": [
+        "amb-p1"
+      ],
+      "attributes": {}
+    },
+    {
+      "span_id": "amb-a1",
+      "parent_span_id": null,
+      "action_id": null,
+      "name": "Generate final answer",
+      "action_type": "model",
+      "start_time": "2026-10-14T09:00:00.170000+00:00",
+      "end_time": "2026-10-14T09:00:00.305000+00:00",
+      "status": "ok",
+      "inputs": {
+        "context": "amb-r1"
+      },
+      "outputs": "Please contact the relevant team.",
+      "tool_name": null,
+      "tool_call_id": null,
+      "model": "gpt-demo",
+      "provider": "offline-fixture",
+      "token_usage": {
+        "total_tokens": 99
+      },
+      "retry_attempt": null,
+      "exception": null,
+      "explicit_dependencies": [
+        "amb-r1"
+      ],
+      "attributes": {}
+    }
+  ]
+}

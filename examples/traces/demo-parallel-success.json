@@ -1,0 +1,161 @@
+{
+  "schema_version": "1.0",
+  "trace_id": "trace-demo-parallel-success",
+  "run_id": "demo-parallel-success",
+  "session_id": "session-supply-forecast",
+  "task_id": "supply-forecast",
+  "task": "Combine parallel supplier and demand signals",
+  "agent_id": "demo-orchestrator",
+  "started_at": "2026-10-15T09:00:00+00:00",
+  "ended_at": "2026-10-15T09:00:01.040000+00:00",
+  "status": "success",
+  "final_answer": "Recommend ordering 45 units.",
+  "evaluation_results": {
+    "passed": true
+  },
+  "environment": {
+    "dataset": "synthetic-demo",
+    "environment": "local-demo"
+  },
+  "spans": [
+    {
+      "span_id": "par-p1",
+      "parent_span_id": null,
+      "action_id": null,
+      "name": "Plan supply forecast",
+      "action_type": "planning",
+      "start_time": "2026-10-15T09:00:00+00:00",
+      "end_time": "2026-10-15T09:00:00.040000+00:00",
+      "status": "ok",
+      "inputs": null,
+      "outputs": {
+        "parallel": true
+      },
+      "tool_name": null,
+      "tool_call_id": null,
+      "model": "gpt-demo",
+      "provider": "offline-fixture",
+      "token_usage": {
+        "total_tokens": 81
+      },
+      "retry_attempt": null,
+      "exception": null,
+      "explicit_dependencies": [],
+      "attributes": {}
+    },
+    {
+      "span_id": "par-s1",
+      "parent_span_id": null,
+      "action_id": null,
+      "name": "Read supplier feed",
+      "action_type": "tool",
+      "start_time": "2026-10-15T09:00:00.080000+00:00",
+      "end_time": "2026-10-15T09:00:00.830000+00:00",
+      "status": "ok",
+      "inputs": {
+        "region": "south"
+      },
+      "outputs": {
+        "lead_days": 3
+      },
+      "tool_name": "supplier.api",
+      "tool_call_id": null,
+      "model": null,
+      "provider": null,
+      "token_usage": {},
+      "retry_attempt": null,
+      "exception": null,
+      "explicit_dependencies": [
+        "par-p1"
+      ],
+      "attributes": {}
+    },
+    {
+      "span_id": "par-d1",
+      "parent_span_id": null,
+      "action_id": null,
+      "name": "Read demand forecast",
+      "action_type": "tool",
+      "start_time": "2026-10-15T09:00:00.090000+00:00",
+      "end_time": "2026-10-15T09:00:00.610000+00:00",
+      "status": "ok",
+      "inputs": {
+        "region": "south"
+      },
+      "outputs": {
+        "units": 120
+      },
+      "tool_name": "forecast.api",
+      "tool_call_id": null,
+      "model": null,
+      "provider": null,
+      "token_usage": {},
+      "retry_attempt": null,
+      "exception": null,
+      "explicit_dependencies": [
+        "par-p1"
+      ],
+      "attributes": {}
+    },
+    {
+      "span_id": "par-i1",
+      "parent_span_id": null,
+      "action_id": null,
+      "name": "Read inventory snapshot",
+      "action_type": "tool",
+      "start_time": "2026-10-15T09:00:00.095000+00:00",
+      "end_time": "2026-10-15T09:00:00.775000+00:00",
+      "status": "ok",
+      "inputs": {
+        "region": "south"
+      },
+      "outputs": {
+        "units": 86
+      },
+      "tool_name": "inventory.api",
+      "tool_call_id": null,
+      "model": null,
+      "provider": null,
+      "token_usage": {},
+      "retry_attempt": null,
+      "exception": null,
+      "explicit_dependencies": [
+        "par-p1"
+      ],
+      "attributes": {}
+    },
+    {
+      "span_id": "par-m1",
+      "parent_span_id": null,
+      "action_id": null,
+      "name": "Merge forecast signals",
+      "action_type": "model",
+      "start_time": "2026-10-15T09:00:00.900000+00:00",
+      "end_time": "2026-10-15T09:00:01.040000+00:00",
+      "status": "ok",
+      "inputs": {
+        "supplier": "par-s1",
+        "demand": "par-d1",
+        "inventory": "par-i1"
+      },
+      "outputs": {
+        "recommended_order": 45
+      },
+      "tool_name": null,
+      "tool_call_id": null,
+      "model": "gpt-demo",
+      "provider": "offline-fixture",
+      "token_usage": {
+        "total_tokens": 110
+      },
+      "retry_attempt": null,
+      "exception": null,
+      "explicit_dependencies": [
+        "par-s1",
+        "par-d1",
+        "par-i1"
+      ],
+      "attributes": {}
+    }
+  ]
+}

@@ -1,0 +1,104 @@
+{
+  "schema_version": "1.0",
+  "trace_id": "trace-demo-wrong-tool",
+  "run_id": "demo-wrong-tool",
+  "session_id": "session-invoice-lookup",
+  "task_id": "invoice-lookup",
+  "task": "Find invoice INV-244 for Acme",
+  "agent_id": "demo-orchestrator",
+  "started_at": "2026-10-16T09:00:00+00:00",
+  "ended_at": "2026-10-16T09:00:00.303000+00:00",
+  "status": "failure",
+  "final_answer": null,
+  "evaluation_results": {
+    "passed": false
+  },
+  "environment": {
+    "dataset": "synthetic-demo",
+    "environment": "local-demo"
+  },
+  "spans": [
+    {
+      "span_id": "tool-p1",
+      "parent_span_id": null,
+      "action_id": null,
+      "name": "Select lookup action",
+      "action_type": "planning",
+      "start_time": "2026-10-16T09:00:00+00:00",
+      "end_time": "2026-10-16T09:00:00.208000+00:00",
+      "status": "ok",
+      "inputs": null,
+      "outputs": {
+        "expected_tool": "invoice_search"
+      },
+      "tool_name": null,
+      "tool_call_id": null,
+      "model": "gpt-demo",
+      "provider": "offline-fixture",
+      "token_usage": {
+        "total_tokens": 90
+      },
+      "retry_attempt": null,
+      "exception": null,
+      "explicit_dependencies": [],
+      "attributes": {}
+    },
+    {
+      "span_id": "tool-c1",
+      "parent_span_id": "tool-p1",
+      "action_id": null,
+      "name": "Search customer directory",
+      "action_type": "tool",
+      "start_time": "2026-10-16T09:00:00.080000+00:00",
+      "end_time": "2026-10-16T09:00:00.208000+00:00",
+      "status": "ok",
+      "inputs": {
+        "name": "Acme",
+        "invoice": "INV-244"
+      },
+      "outputs": {
+        "customer_id": "C-22"
+      },
+      "tool_name": "customer.search",
+      "tool_call_id": null,
+      "model": null,
+      "provider": null,
+      "token_usage": {},
+      "retry_attempt": null,
+      "exception": null,
+      "explicit_dependencies": [
+        "tool-p1"
+      ],
+      "attributes": {
+        "expected_tool": "invoice_search"
+      }
+    },
+    {
+      "span_id": "tool-a1",
+      "parent_span_id": null,
+      "action_id": null,
+      "name": "Format invoice result",
+      "action_type": "model",
+      "start_time": "2026-10-16T09:00:00.240000+00:00",
+      "end_time": "2026-10-16T09:00:00.303000+00:00",
+      "status": "error",
+      "inputs": {
+        "invoice": null
+      },
+      "outputs": null,
+      "tool_name": null,
+      "tool_call_id": null,
+      "model": "gpt-demo",
+      "provider": "offline-fixture",
+      "token_usage": {
+        "total_tokens": 72
+      },
+      "retry_attempt": null,
+      "exception": "Missing data: invoice lookup result was not found",
+      "explicit_dependencies": [
+        "tool-c1"
+      ],
+      "attributes": {}
+    }
+  ]
+}

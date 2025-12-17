@@ -1,0 +1,344 @@
+{
+  "benchmark": "TraceLens synthetic labeled fixtures v2",
+  "case_count": 11,
+  "comparison_count": 1,
+  "category_micro": {
+    "true_positives": 16,
+    "false_positives": 0,
+    "false_negatives": 0,
+    "precision": 1.0,
+    "recall": 1.0,
+    "f1": 1.0,
+    "per_category": {
+      "authentication_or_permission_failure": {
+        "tp": 1,
+        "fp": 0,
+        "fn": 0,
+        "precision": 1.0
+      },
+      "evaluation_or_final_answer_failure": {
+        "tp": 3,
+        "fp": 0,
+        "fn": 0,
+        "precision": 1.0
+      },
+      "incorrect_tool_selection": {
+        "tp": 1,
+        "fp": 0,
+        "fn": 0,
+        "precision": 1.0
+      },
+      "invalid_tool_arguments": {
+        "tp": 1,
+        "fp": 0,
+        "fn": 0,
+        "precision": 1.0
+      },
+      "missing_or_malformed_external_data": {
+        "tp": 5,
+        "fp": 0,
+        "fn": 0,
+        "precision": 1.0
+      },
+      "retrieval_context_error": {
+        "tp": 1,
+        "fp": 0,
+        "fn": 0,
+        "precision": 1.0
+      },
+      "state_dependency_inconsistency": {
+        "tp": 1,
+        "fp": 0,
+        "fn": 0,
+        "precision": 1.0
+      },
+      "tool_timeout": {
+        "tp": 2,
+        "fp": 0,
+        "fn": 0,
+        "precision": 1.0
+      },
+      "unknown_or_insufficient_evidence": {
+        "tp": 1,
+        "fp": 0,
+        "fn": 0,
+        "precision": 1.0
+      }
+    }
+  },
+  "known_cause_localization": {
+    "correct_top_hypothesis": 7,
+    "cases_with_labeled_cause": 7,
+    "accuracy": 1.0
+  },
+  "first_divergence": {
+    "correct": 1,
+    "comparisons": 1,
+    "accuracy": 1.0
+  },
+  "abstention_quality": {
+    "correct_abstentions": 1,
+    "false_abstentions_on_labeled_causes": 0,
+    "missed_abstentions": 0,
+    "precision": 1.0,
+    "recall": 1.0
+  },
+  "false_positive_runs": 0,
+  "mean_hypotheses_per_run": 1.36,
+  "limitations": [
+    "Synthetic traces encode clean annotations and do not represent production instrumentation noise.",
+    "Category metrics count expected category labels as multi-label observations.",
+    "Cause localization checks only the top-ranked hypothesis.",
+    "The divergence set is small; treat its accuracy as indicative, not statistically meaningful.",
+    "Metrics are a regression benchmark, not a real-world accuracy guarantee."
+  ],
+  "cases": [
+    {
+      "run_id": "demo-orders-reference",
+      "expected_categories": [],
+      "predicted_categories": [],
+      "true_positive_categories": [],
+      "false_positive_categories": [],
+      "missed_categories": [],
+      "expected_cause_span_id": null,
+      "predicted_top_hypothesis_span_id": null,
+      "localization_correct": false,
+      "expected_abstention": false,
+      "predicted_abstention": true,
+      "hypothesis_count": 0
+    },
+    {
+      "run_id": "demo-orders-invalid-args",
+      "expected_categories": [
+        "evaluation_or_final_answer_failure",
+        "invalid_tool_arguments",
+        "missing_or_malformed_external_data"
+      ],
+      "predicted_categories": [
+        "evaluation_or_final_answer_failure",
+        "invalid_tool_arguments",
+        "missing_or_malformed_external_data"
+      ],
+      "true_positive_categories": [
+        "evaluation_or_final_answer_failure",
+        "invalid_tool_arguments",
+        "missing_or_malformed_external_data"
+      ],
+      "false_positive_categories": [],
+      "missed_categories": [],
+      "expected_cause_span_id": "bad-q1",
+      "predicted_top_hypothesis_span_id": "bad-q1",
+      "localization_correct": true,
+      "expected_abstention": false,
+      "predicted_abstention": false,
+      "hypothesis_count": 3
+    },
+    {
+      "run_id": "demo-timeout-recovered",
+      "expected_categories": [
+        "tool_timeout"
+      ],
+      "predicted_categories": [
+        "tool_timeout"
+      ],
+      "true_positive_categories": [
+        "tool_timeout"
+      ],
+      "false_positive_categories": [],
+      "missed_categories": [],
+      "expected_cause_span_id": null,
+      "predicted_top_hypothesis_span_id": null,
+      "localization_correct": false,
+      "expected_abstention": false,
+      "predicted_abstention": true,
+      "hypothesis_count": 0
+    },
+    {
+      "run_id": "demo-rag-stale-context",
+      "expected_categories": [
+        "evaluation_or_final_answer_failure",
+        "retrieval_context_error"
+      ],
+      "predicted_categories": [
+        "evaluation_or_final_answer_failure",
+        "retrieval_context_error"
+      ],
+      "true_positive_categories": [
+        "evaluation_or_final_answer_failure",
+        "retrieval_context_error"
+      ],
+      "false_positive_categories": [],
+      "missed_categories": [],
+      "expected_cause_span_id": "rag-r1",
+      "predicted_top_hypothesis_span_id": "rag-r1",
+      "localization_correct": true,
+      "expected_abstention": false,
+      "predicted_abstention": false,
+      "hypothesis_count": 2
+    },
+    {
+      "run_id": "demo-wrong-tool",
+      "expected_categories": [
+        "incorrect_tool_selection",
+        "missing_or_malformed_external_data"
+      ],
+      "predicted_categories": [
+        "incorrect_tool_selection",
+        "missing_or_malformed_external_data"
+      ],
+      "true_positive_categories": [
+        "incorrect_tool_selection",
+        "missing_or_malformed_external_data"
+      ],
+      "false_positive_categories": [],
+      "missed_categories": [],
+      "expected_cause_span_id": "tool-c1",
+      "predicted_top_hypothesis_span_id": "tool-c1",
+      "localization_correct": true,
+      "expected_abstention": false,
+      "predicted_abstention": false,
+      "hypothesis_count": 2
+    },
+    {
+      "run_id": "demo-corrupt-state",
+      "expected_categories": [
+        "missing_or_malformed_external_data",
+        "state_dependency_inconsistency"
+      ],
+      "predicted_categories": [
+        "missing_or_malformed_external_data",
+        "state_dependency_inconsistency"
+      ],
+      "true_positive_categories": [
+        "missing_or_malformed_external_data",
+        "state_dependency_inconsistency"
+      ],
+      "false_positive_categories": [],
+      "missed_categories": [],
+      "expected_cause_span_id": "state-v1",
+      "predicted_top_hypothesis_span_id": "state-v1",
+      "localization_correct": true,
+      "expected_abstention": false,
+      "predicted_abstention": false,
+      "hypothesis_count": 2
+    },
+    {
+      "run_id": "demo-delegation-timeout",
+      "expected_categories": [
+        "missing_or_malformed_external_data",
+        "tool_timeout"
+      ],
+      "predicted_categories": [
+        "missing_or_malformed_external_data",
+        "tool_timeout"
+      ],
+      "true_positive_categories": [
+        "missing_or_malformed_external_data",
+        "tool_timeout"
+      ],
+      "false_positive_categories": [],
+      "missed_categories": [],
+      "expected_cause_span_id": "multi-b1",
+      "predicted_top_hypothesis_span_id": "multi-b1",
+      "localization_correct": true,
+      "expected_abstention": false,
+      "predicted_abstention": false,
+      "hypothesis_count": 2
+    },
+    {
+      "run_id": "demo-parallel-success",
+      "expected_categories": [],
+      "predicted_categories": [],
+      "true_positive_categories": [],
+      "false_positive_categories": [],
+      "missed_categories": [],
+      "expected_cause_span_id": null,
+      "predicted_top_hypothesis_span_id": null,
+      "localization_correct": false,
+      "expected_abstention": false,
+      "predicted_abstention": true,
+      "hypothesis_count": 0
+    },
+    {
+      "run_id": "demo-final-answer-failure",
+      "expected_categories": [
+        "evaluation_or_final_answer_failure"
+      ],
+      "predicted_categories": [
+        "evaluation_or_final_answer_failure"
+      ],
+      "true_positive_categories": [
+        "evaluation_or_final_answer_failure"
+      ],
+      "false_positive_categories": [],
+      "missed_categories": [],
+      "expected_cause_span_id": "fin-e1",
+      "predicted_top_hypothesis_span_id": "fin-e1",
+      "localization_correct": true,
+      "expected_abstention": false,
+      "predicted_abstention": false,
+      "hypothesis_count": 1
+    },
+    {
+      "run_id": "demo-permission-denied",
+      "expected_categories": [
+        "authentication_or_permission_failure",
+        "missing_or_malformed_external_data"
+      ],
+      "predicted_categories": [
+        "authentication_or_permission_failure",
+        "missing_or_malformed_external_data"
+      ],
+      "true_positive_categories": [
+        "authentication_or_permission_failure",
+        "missing_or_malformed_external_data"
+      ],
+      "false_positive_categories": [],
+      "missed_categories": [],
+      "expected_cause_span_id": "perm-t1",
+      "predicted_top_hypothesis_span_id": "perm-t1",
+      "localization_correct": true,
+      "expected_abstention": false,
+      "predicted_abstention": false,
+      "hypothesis_count": 2
+    },
+    {
+      "run_id": "demo-ambiguous",
+      "expected_categories": [
+        "unknown_or_insufficient_evidence"
+      ],
+      "predicted_categories": [
+        "unknown_or_insufficient_evidence"
+      ],
+      "true_positive_categories": [
+        "unknown_or_insufficient_evidence"
+      ],
+      "false_positive_categories": [],
+      "missed_categories": [],
+      "expected_cause_span_id": null,
+      "predicted_top_hypothesis_span_id": null,
+      "localization_correct": false,
+      "expected_abstention": true,
+      "predicted_abstention": true,
+      "hypothesis_count": 1
+    }
+  ],
+  "comparisons": [
+    {
+      "name": "weekly-orders reference vs invalid-arguments",
+      "baseline_run_id": "demo-orders-reference",
+      "candidate_run_id": "demo-orders-invalid-args",
+      "expected_divergence_span_id": "bad-q1",
+      "predicted_divergence_span_id": "bad-q1",
+      "expected_divergence_field": "inputs",
+      "observed_difference_fields": [
+        "duration_ms",
+        "inputs",
+        "outputs",
+        "status"
+      ],
+      "correct": true,
+      "aligned_action_count": 4
+    }
+  ]
+}

@@ -1,0 +1,26 @@
+{
+  "dataset": "TraceLens deterministic synthetic benchmark v2",
+  "notes": "Expected labels are fixture ground truth, not real-world accuracy claims. Root-cause span labels mark the designed causal intervention point in these synthetic traces. Divergence labels mark the first action whose recorded value differs between a successful reference run and its failing counterpart.",
+  "cases": [
+    {"run_id":"demo-orders-reference","expected_categories":[],"expected_cause_span_id":null,"must_abstain":false},
+    {"run_id":"demo-orders-invalid-args","expected_categories":["invalid_tool_arguments","missing_or_malformed_external_data","evaluation_or_final_answer_failure"],"expected_cause_span_id":"bad-q1","must_abstain":false},
+    {"run_id":"demo-timeout-recovered","expected_categories":["tool_timeout"],"expected_cause_span_id":null,"must_abstain":false},
+    {"run_id":"demo-rag-stale-context","expected_categories":["retrieval_context_error","evaluation_or_final_answer_failure"],"expected_cause_span_id":"rag-r1","must_abstain":false},
+    {"run_id":"demo-wrong-tool","expected_categories":["incorrect_tool_selection","missing_or_malformed_external_data"],"expected_cause_span_id":"tool-c1","must_abstain":false},
+    {"run_id":"demo-corrupt-state","expected_categories":["state_dependency_inconsistency","missing_or_malformed_external_data"],"expected_cause_span_id":"state-v1","must_abstain":false},
+    {"run_id":"demo-delegation-timeout","expected_categories":["tool_timeout","missing_or_malformed_external_data"],"expected_cause_span_id":"multi-b1","must_abstain":false},
+    {"run_id":"demo-parallel-success","expected_categories":[],"expected_cause_span_id":null,"must_abstain":false},
+    {"run_id":"demo-final-answer-failure","expected_categories":["evaluation_or_final_answer_failure"],"expected_cause_span_id":"fin-e1","must_abstain":false},
+    {"run_id":"demo-permission-denied","expected_categories":["authentication_or_permission_failure","missing_or_malformed_external_data"],"expected_cause_span_id":"perm-t1","must_abstain":false},
+    {"run_id":"demo-ambiguous","expected_categories":["unknown_or_insufficient_evidence"],"expected_cause_span_id":null,"must_abstain":true}
+  ],
+  "comparisons": [
+    {
+      "name": "weekly-orders reference vs invalid-arguments",
+      "baseline_run_id": "demo-orders-reference",
+      "candidate_run_id": "demo-orders-invalid-args",
+      "expected_divergence_span_id": "bad-q1",
+      "expected_divergence_field": "inputs"
+    }
+  ]
+}

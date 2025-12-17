@@ -1,0 +1,97 @@
+{
+  "schema_version": "1.0",
+  "trace_id": "trace-demo-permission-denied",
+  "run_id": "demo-permission-denied",
+  "session_id": "session-account-access",
+  "task_id": "account-access",
+  "task": "Read tenant billing configuration",
+  "agent_id": "demo-orchestrator",
+  "started_at": "2026-10-14T09:00:00+00:00",
+  "ended_at": "2026-10-14T09:00:00.145000+00:00",
+  "status": "failure",
+  "final_answer": null,
+  "evaluation_results": {
+    "passed": false
+  },
+  "environment": {
+    "dataset": "synthetic-demo",
+    "environment": "local-demo"
+  },
+  "spans": [
+    {
+      "span_id": "perm-p1",
+      "parent_span_id": null,
+      "action_id": null,
+      "name": "Plan billing lookup",
+      "action_type": "planning",
+      "start_time": "2026-10-14T09:00:00+00:00",
+      "end_time": "2026-10-14T09:00:00.020000+00:00",
+      "status": "ok",
+      "inputs": null,
+      "outputs": {
+        "tool": "billing.get_config"
+      },
+      "tool_name": null,
+      "tool_call_id": null,
+      "model": "gpt-demo",
+      "provider": "offline-fixture",
+      "token_usage": {
+        "total_tokens": 45
+      },
+      "retry_attempt": null,
+      "exception": null,
+      "explicit_dependencies": [],
+      "attributes": {}
+    },
+    {
+      "span_id": "perm-t1",
+      "parent_span_id": null,
+      "action_id": null,
+      "name": "Read billing configuration",
+      "action_type": "tool",
+      "start_time": "2026-10-14T09:00:00.055000+00:00",
+      "end_time": "2026-10-14T09:00:00.087000+00:00",
+      "status": "error",
+      "inputs": {
+        "tenant_id": "tenant-42"
+      },
+      "outputs": null,
+      "tool_name": "billing.get_config",
+      "tool_call_id": null,
+      "model": null,
+      "provider": null,
+      "token_usage": {},
+      "retry_attempt": null,
+      "exception": "403 Forbidden: service identity lacks billing.read permission",
+      "explicit_dependencies": [
+        "perm-p1"
+      ],
+      "attributes": {}
+    },
+    {
+      "span_id": "perm-f1",
+      "parent_span_id": null,
+      "action_id": null,
+      "name": "Report billing state",
+      "action_type": "model",
+      "start_time": "2026-10-14T09:00:00.100000+00:00",
+      "end_time": "2026-10-14T09:00:00.145000+00:00",
+      "status": "error",
+      "inputs": null,
+      "outputs": null,
+      "tool_name": null,
+      "tool_call_id": null,
+      "model": "gpt-demo",
+      "provider": "offline-fixture",
+      "token_usage": {
+        "total_tokens": 20
+      },
+      "retry_attempt": null,
+      "exception": "Missing data: billing configuration unavailable",
+      "explicit_dependencies": [
+        "perm-t1"
+      ],
+      "attributes": {}
+    }
+  ]
+}

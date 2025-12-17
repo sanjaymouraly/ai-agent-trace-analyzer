@@ -1,0 +1,137 @@
+{
+  "schema_version": "1.0",
+  "trace_id": "trace-demo-corrupt-state",
+  "run_id": "demo-corrupt-state",
+  "session_id": "session-customer-onboarding",
+  "task_id": "customer-onboarding",
+  "task": "Create account then verify persisted profile",
+  "agent_id": "demo-orchestrator",
+  "started_at": "2026-10-16T09:00:00+00:00",
+  "ended_at": "2026-10-16T09:00:00.410000+00:00",
+  "status": "failure",
+  "final_answer": null,
+  "evaluation_results": {
+    "passed": false
+  },
+  "environment": {
+    "dataset": "synthetic-demo",
+    "environment": "local-demo"
+  },
+  "spans": [
+    {
+      "span_id": "state-p1",
+      "parent_span_id": null,
+      "action_id": null,
+      "name": "Plan onboarding",
+      "action_type": "planning",
+      "start_time": "2026-10-16T09:00:00+00:00",
+      "end_time": "2026-10-16T09:00:00.247000+00:00",
+      "status": "ok",
+      "inputs": null,
+      "outputs": {
+        "steps": [
+          "create",
+          "verify"
+        ]
+      },
+      "tool_name": null,
+      "tool_call_id": null,
+      "model": "gpt-demo",
+      "provider": "offline-fixture",
+      "token_usage": {
+        "total_tokens": 80
+      },
+      "retry_attempt": null,
+      "exception": null,
+      "explicit_dependencies": [],
+      "attributes": {}
+    },
+    {
+      "span_id": "state-c1",
+      "parent_span_id": "state-p1",
+      "action_id": null,
+      "name": "Create customer profile",
+      "action_type": "tool",
+      "start_time": "2026-10-16T09:00:00.075000+00:00",
+      "end_time": "2026-10-16T09:00:00.247000+00:00",
+      "status": "ok",
+      "inputs": {
+        "email": "demo@example.invalid",
+        "schema_version": 2
+      },
+      "outputs": {
+        "customer_id": "C-808",
+        "state_version": 2
+      },
+      "tool_name": "crm.create_profile",
+      "tool_call_id": null,
+      "model": null,
+      "provider": null,
+      "token_usage": {},
+      "retry_attempt": null,
+      "exception": null,
+      "explicit_dependencies": [
+        "state-p1"
+      ],
+      "attributes": {
+        "state_version": 2
+      }
+    },
+    {
+      "span_id": "state-v1",
+      "parent_span_id": null,
+      "action_id": null,
+      "name": "Verify profile state",
+      "action_type": "state",
+      "start_time": "2026-10-16T09:00:00.290000+00:00",
+      "end_time": "2026-10-16T09:00:00.302000+00:00",
+      "status": "error",
+      "inputs": {
+        "customer_id": "C-808",
+        "state_version": 1
+      },
+      "outputs": null,
+      "tool_name": null,
+      "tool_call_id": null,
+      "model": null,
+      "provider": null,
+      "token_usage": {},
+      "retry_attempt": null,
+      "exception": "State checksum mismatch: consumer read version 1 after producer wrote version 2",
+      "explicit_dependencies": [
+        "state-c1"
+      ],
+      "attributes": {
+        "state_valid": false,
+        "consumed_invalid_output": true
+      }
+    },
+    {
+      "span_id": "state-f1",
+      "parent_span_id": null,
+      "action_id": null,
+      "name": "Report onboarding result",
+      "action_type": "model",
+      "start_time": "2026-10-16T09:00:00.350000+00:00",
+      "end_time": "2026-10-16T09:00:00.410000+00:00",
+      "status": "error",
+      "inputs": {
+        "profile": null
+      },
+      "outputs": null,
+      "tool_name": null,
+      "tool_call_id": null,
+      "model": "gpt-demo",
+      "provider": "offline-fixture",
+      "token_usage": {
+        "total_tokens": 40
+      },
+      "retry_attempt": null,
+      "exception": "Missing data: verified profile not available",
+      "explicit_dependencies": [
+        "state-v1"
+      ],
+      "attributes": {}
+    }
+  ]
+}
